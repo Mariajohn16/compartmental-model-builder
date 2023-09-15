@@ -1,6 +1,6 @@
 pandas
-matplotlib.pyplot
+matplotlib
 io
-plotly.express
+plotly
 stoggle
 mdlit
