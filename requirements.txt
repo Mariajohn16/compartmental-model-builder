@@ -1,1 +1,6 @@
-git+https://github.com/pandas/matplotlib.pyplot/io/plotly.express/stoggle/mdlit
+pandas
+matplotlib.pyplot
+io
+plotly.express
+stoggle
+mdlit
