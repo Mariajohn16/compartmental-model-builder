@@ -1,4 +1,4 @@
-pip install streamlit, pandas, matplotlib.pyplot,io, plotly.express, stoggle, mdlit
+
 
 
 import streamlit as st 
