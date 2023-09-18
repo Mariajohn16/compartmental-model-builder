@@ -1,6 +1,3 @@
-
-
-
 import streamlit as st 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -109,8 +106,9 @@ header("Build Your own Compartmental Models")
 with st.sidebar:
  header3("Enter Data for Model")    
  timeframe = st.slider("Choose Amount of Days to Run Model:", max_value=365)
+ yaxislength = st.slider("Choose Length of Y axis:", max_value=400, step= 1)
 
-
+ int(yaxislength)
  int(timeframe)
 
  tab1,tab2,tab3 = st.tabs(["1: Compartments","2: Parameters","3: Formulas"])
@@ -172,17 +170,37 @@ with st.sidebar:
                   st.session_state[compdict] = compdict
            
 
-    
+     if 'compbutton3' not in st.session_state:
+         st.session_state.compbutton3 = False
 
-    
-     compdata1 ={(c.name , c.value)for c in compdict}
+     def click_compbutton3():
+        st.session_state.compbutton3 = not st.session_state.compbutton3
 
-     compdata4 = pd.DataFrame(compdata1)
-    
+     st.button('View Compartments', on_click=click_compbutton3)
+          
+
+
+     if st.session_state.compbutton3:
+         compdata1 = {c.name: c.value for c in compdict}
+         compdata4 = pd.DataFrame(compdata1.items())
+         compdata4.columns = ["Compartment Name", "Compartment Value"] 
+         st.write(compdata4)
+
+
+     
+     
+     
+     
+     compdata1 = {c.name: c.value for c in compdict}
+
+     compdata4 = pd.DataFrame(compdata1.items())
+     if not compdata4.empty:
+         compdata4.columns = ["Compartment Name", "Compartment Value"] 
      compcsv = compdata4.to_csv().encode('utf-8')
      
      compdown = st.download_button('Download Compartments',data = compcsv, file_name ='Compartments.csv', mime ='text/csv') 
-     
+
+         
   
     
      
@@ -234,13 +252,29 @@ with st.sidebar:
                    paramdict.append(e)
                    st.session_state[paramdict] = paramdict 
             
-      
-      paradata1 ={(c.name, c.value) for c in paramdict}
-      paradict4 = pd.DataFrame(paradata1)
+      if 'parabutton4' not in st.session_state:
+         st.session_state.parabutton4= False
+
+      def click_parabutton4():
+         st.session_state.parabutton4 = not st.session_state.parabutton4
+
+  
+      st.button('View Parameters', on_click=click_parabutton4)
+      if st.session_state.parabutton4:
+         st.write("Click to Hide!")
+         paradata1 ={c.name: c.value for c in paramdict}
+         st.session_state[paradata1] = paradata1
+         paradict4 = pd.DataFrame(paradata1.items())
+         paradict4.columns= ["Parameter Name","Parameter Value"]
+         st.write(paradict4)
       
       
     
 
+      paradata1 ={c.name: c.value for c in paramdict}
+      paradict4 = pd.DataFrame(paradata1.items()) 
+      if not paradict4.empty:
+         paradict4.columns= ["Parameter Name","Parameter Value"] 
       paracsv = paradict4.to_csv().encode('utf-8')
       paradown = st.download_button('Download Parameters',data = paracsv, file_name ='Parameters.csv', mime ='text/csv')
              
@@ -303,14 +337,28 @@ with st.sidebar:
      
       
        
-     
-      linkdata1 = {(c.fromcomp,c.tocomp,c.formula) for c in formdict}
-      linkdata4 = pd.DataFrame((linkdata1))
-      
-      
+      if 'linkbutton3' not in st.session_state:
+         st.session_state.linkbutton3= False
 
+      def click_linkbutton3():
+         st.session_state.linkbutton3 = not st.session_state.linkbutton3
       
       
+     
+    
+      st.button('View Formulas', on_click=click_linkbutton3)
+      if st.session_state.linkbutton3:
+          st.write("Click to Hide!")
+          linkdata1 = {(c.fromcomp,c.tocomp,c.formula) for c in formdict}
+          linkdata4 = pd.DataFrame(linkdata1)
+          linkdata4.columns =["From compartment", "To Compartment", "Formula"]
+          st.write(linkdata4)
+    
+
+      linkdata1 = {(c.fromcomp,c.tocomp,c.formula) for c in formdict}
+      linkdata4 = pd.DataFrame(linkdata1)
+      if not linkdata4.empty:
+          linkdata4.columns =["From compartment", "To Compartment", "Formula"]
       
       
       linkcsv = linkdata4.to_csv().encode('utf-8')
@@ -409,6 +457,7 @@ for f in name:
         value = st.slider("Slide to Change", key = f, min_value= 0.00, max_value= max, step= steps)
         st.markdown("#")
         subs[f] = value
+        paradata1[f] = value
         st.session_state[subs] = subs
 
 
@@ -438,6 +487,7 @@ if st.session_state.run:
                if w == d.tocomp: #when compartment dict =   compartment formula is linking to
                    results[w].append(new_to_comp_val) #for every initial compartment dict, add the calulated new comp valu
                    subs[w] = new_to_comp_val
+               
                        
      
       
@@ -454,7 +504,7 @@ if st.session_state.run:
       fig1 = px.scatter(df2, x = df2.index,
                      y = df2.columns, title= graph_tit, animation_frame = df2.index,
                      labels={'x': graph_x, 'y': graph_y},
-                    range_x =[0, timeframe])
+                    range_x =[0, timeframe], range_y = [0,yaxislength])
       
 
    
@@ -467,7 +517,7 @@ if st.session_state.run:
       st.write(fig1)
 
      with tab5:
-      ax = df2.plot(kind='line', title =graph_tit, legend=True, figsize=(9,4))
+      ax = df2.plot(kind='line', title =graph_tit, legend=True, figsize=(9,4),  xlim=([0,timeframe]), ylim=([0,yaxislength]))
       ax.set_xlabel(graph_x, fontsize=10)
 
       ax.set_ylabel(graph_y)
@@ -496,5 +546,9 @@ if st.session_state.run:
       mime='text/csv',
       )
       st.write(df2)
+
+
+
+
 
 
