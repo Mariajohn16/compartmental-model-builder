@@ -1,0 +1,4 @@
+fromcomp,tocomp,formula
+I,R,kappa * I
+N,S,-beta * (S/(S+I+R)) * I
+S,I,beta * (S/(S+I+R)) * I - kappa * I

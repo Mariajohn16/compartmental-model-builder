@@ -1,0 +1,5 @@
+fromcomp,tocomp,formula
+R,S,-((I*S*beta)/(N))
+S,I,((beta*I*S)/N) -(gamma*I) - (lamba*I)
+I,R,(I*gamma)
+I,D,I*lamba

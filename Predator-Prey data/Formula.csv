@@ -1,0 +1,3 @@
+fromcomp,tocomp,formula
+fox,rabbit,(a*rabbit)-(b*rabbit*fox)
+rabbit,fox,(c*b*fox*rabbit)-(d*fox)
