@@ -1,10 +1,10 @@
+numpy
+pandas >= 1.4.4
+matplotlib >= 3.5.2
 streamlit
-pandas
-
-matplotlib == 3.5.2
-plotly.express == 0.4.1
-streamlit-toggle-switch   ==    1.0.2
-markdownlit     ==              0.0.7
+plotly == 5.10.0
+streamlit-toggle-switch == 1.0.2
+markdownlit == 0.0.7
 
 
 
