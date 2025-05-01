@@ -1,5 +1,6 @@
 streamlit
-pandas == 1.4.4
+pandas
+
 matplotlib == 3.5.2
 plotly.express == 0.4.1
 streamlit-toggle-switch   ==    1.0.2
